@@ -61,8 +61,8 @@
 	    
 	    :precondition (and
 	                    (En ?u ?loc_recurso)                   ; Entendemos que la unidad debe estar en el lugar donde se encuentra el recurso para poder extraerlo  (Si no están en la misma localización, el programa llamará a Navegar)
-						(AsignaNodo ?r ?loc_recurso)           ; También el recurso debe encontrarse en una localización concreta, para ello debe ser verdad el predicado AsignaNodo del recurso y la localización parada como parámetro
-						(not (Extrayendo ?u ?r))               ; Además, como nos indican que una unidad sólo puede recoger un único recurso en toda la ejecución, tendremos que asegurarno que no ha extraído o está extrayendo ningún otro recurso
+                        (AsignaNodo ?r ?loc_recurso)           ; También el recurso debe encontrarse en una localización concreta, para ello debe ser verdad el predicado AsignaNodo del recurso y la localización parada como parámetro
+                        (not (Extrayendo ?u ?r))               ; Además, como nos indican que una unidad sólo puede recoger un único recurso en toda la ejecución, tendremos que asegurarno que no ha extraído o está extrayendo ningún otro recurso
                         (OR                                    ; Hacemos diferencia entre los dos tipos de recursos (gas Vespeno y minerales)
                             (and 
                                 (RecursoEs ?r gas)                  ; Si el recurso que queremos extraer es gas Vespeno tenemos que construir un edificio de tipo extractor en la misma localización
@@ -83,7 +83,7 @@
 
 	    :effect (and                                           ; El resultado de esta acción será:
 	                (Extrayendo ?u ?r)                              ; Primero declararemos que la unidad está extrayendo el recurso
-				    (obtenerRecurso ?r)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
+	                (obtenerRecurso ?r)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
 				    
 				)
 	)
@@ -92,7 +92,7 @@
 	;Construir: 
 	    ; Ordena a un VCE libre que construya un edificio en una localización. 
 	    ; En este ejercicio, cada edificio sólo requerirá un único tipo de recurso para ser construido.
-        ; Adicionalmente y por simplicidad, en este ejercicio se permite que existan varios edificios en la misma localización.
+	    ; Adicionalmente y por simplicidad, en este ejercicio se permite que existan varios edificios en la misma localización.
 	(:action Construir
 	    
 	    :parameters (?u - unidad ?e - edificio ?l - localizacion ?r - recurso)
