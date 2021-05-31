@@ -11,22 +11,22 @@
     ;CONSTANTES ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     (:constants                                             ;CONSTANTES
         vce - unidad                                            ; Las unidades las conoceremos como VCE
-        centroDeMando barracones extractor - edificio                     ; Podemos tener dos tipos de edificios: los contres de Mando y los barracones que también definiremos como constantes
+        centroDeMando barracones extractor - edificio           ; Podemos tener dos tipos de edificios: los contres de Mando y los barracones que también definiremos como constantes
         minerales gas - recurso                                 ; Dentro de los recursos distinguimos minerales y gase Vespeno
     
     )
     
     ;PREDICADOS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     (:predicates                                            ;PREDICADOS
-        (En ?c - elementos ?l - localizacion)          ; Determinar si un edificio o unidad está en una localización concreta
-        (CaminoEntre ?l1 ?l2 - localizacion)                    ; Representar que existe un camino entre dos localizaciones
-        (Construido ?e - edificio)                            ; Determinar si un edificio está construido
-        (AsignaNodo ?r - recurso ?l - localizacion)          ; Asignar un nodo de un recurso concreto a una localizacion concreta
-        (Extrayendo ?u - unidad ?r - recurso)             ; Indicar si un VCE está extrayendo un recurso
-        (obtenerRecurso ?r - recurso)                     ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio
-        (RecursoParaEdificio ?r - recurso ?e - edificio)         ; Definir qué recurso necesita cada edificio para ser construido.
-        (RecursoEs ?r1 - recurso ?r2 - recurso)                   ; Definiremos el predicado "RecursoEs" para poder reconocer o declarar el tipo de recurso (mineral o gas Vespeno)
-        (EdificioEs ?e1 - edificio ?e2 - edificio)                  ; También definiremos el predicado "EdificioEs" para poder reconocer o declarar el tipo de edificio (centro de mando, barracones o extractores)
+        (En ?c - elementos ?l - localizacion)        ; Determinar si un edificio o unidad está en una localización concreta
+        (CaminoEntre ?l1 ?l2 - localizacion)                  ; Representar que existe un camino entre dos localizaciones
+        (Construido ?e - edificio)                      ; Determinar si un edificio está construido
+        (AsignaNodo ?r - recurso ?l - localizacion)        ; Asignar un nodo de un recurso concreto a una localizacion concreta
+        (Extrayendo ?u - unidad ?r - recurso)           ; Indicar si un VCE está extrayendo un recurso
+        (obtenerRecurso ?r - recurso)                   ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio
+        (RecursoParaEdificio ?r - recurso ?e - edificio)   ; Definir qué recurso necesita cada edificio para ser construido.
+        (RecursoEs ?r1 - recurso ?r2 - recurso)            ; Definiremos el predicado "RecursoEs" para poder reconocer o declarar el tipo de recurso (mineral o gas Vespeno)
+        (EdificioEs ?e1 - edificio ?e2 - edificio)         ; También definiremos el predicado "EdificioEs" para poder reconocer o declarar el tipo de edificio (centro de mando, barracones o extractores)
     )                                                   
     
     ;ACCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
