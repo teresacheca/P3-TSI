@@ -75,7 +75,8 @@
             ; Como se nos indica, cuando asignamos un VCE a un nodo de recursos (ya sea mineral o gas Vespeno), ya tendremos recursos ilimitamos de este tipo
             ; Por tanto, sólo será necesario recoger alguno de los dos recursos
             ; Además, como solo tenemos una VCE, sólo podemos llegar a uno de los dos recursos que hay en el mapa, puesto que la unidad no podrá hacer nada más el resto de la ejecución
-            (OR (obtenerRecurso mineral1) (obtenerRecurso mineral2))
+            (exists (?m - recurso) 
+                (obtenerRecurso ?m))
         
         )
     
