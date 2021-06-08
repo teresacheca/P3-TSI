@@ -1,10 +1,10 @@
-(define (problem problema_ejercicio2)
-    (:domain dominio_ejercicio2)
+(define (problem problema_ejercicio4)
+    (:domain dominio_ejercicio4)
     (:objects 
         LOC11 LOC12 LOC13 LOC14 LOC21 LOC22 LOC23 LOC24 LOC31 LOC32 LOC33 LOC34 - localizacion          ; Creamos un mapa de 3x4 (empezando pos la localización 11 y acabando por la 34)
         
         CentroDeMando1 extractor1 barracones1 - edificio             ; También nos indica que necesitamos un centro de mando y un extractor que son de tipo edificio
-        VCE1 VCE2 VCE3 - unidad                               ; Es importante declarar nuestras unidades, pues serán las que recogan los recursos y construyan los edificios necesarios
+        VCE1 VCE2 VCE3 Marine1 Marine2 Segador1 - unidad                               ; Es importante declarar nuestras unidades, pues serán las que recogan los recursos y construyan los edificios necesarios
         mineral1 mineral2 gas1 - recurso                 ; También tenemos dos recursos que sean minerales y un recurso que sea gas (el tipo se declarará en el init)
     )
     
@@ -61,7 +61,7 @@
         ; Inicializamos la localización en la que se encuentra el centro de Mando 
         (En CentroDeMando1 LOC11)      
         ; Declararemos también que el centro de mando está construido
-       ; (Construido CentroDeMando1) 
+        (Construido CentroDeMando1 LOC11) 
 
         ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 y VCE2
         (En VCE1 LOC11)
@@ -98,14 +98,28 @@
         (RecursoParaEdificio minerales barracones)
         (RecursoParaEdificio gas barracones)
 
+        (UnidadEs Marine1 marines)
+        (UnidadEs Marine2 marines)
+        (UnidadEs Segador1 segadores)
+
+        (ReclutadoEn vce centroDeMando)
+        (ReclutadoEn marines barracones)
+        (ReclutadoEn segadores barracones)
+
+        (RecursoParaUnidad minerales vce)
+        (RecursoParaUnidad minerales marines)
+        (RecursoParaUnidad gas segadores)
+
+        (EdificioEs centroDeMando1 centroDeMando)
 
     )
     
     (:goal
         (and
             ; El objetivo del programa será recoger recurss de tipo gas Vespeno
-            ;(obtenerRecurso gas)
-            (En barracones1 LOC32)
+            (En marine1 LOC31)
+            (En marine2 LOC24)
+            (En segador1 LOC12)
         
         )
     
