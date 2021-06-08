@@ -23,7 +23,7 @@
     (:predicates                                            ;PREDICADOS
         (En ?c - elementos ?l - localizacion)                   ; Determinar si un edificio o unidad está en una localización concreta
         (CaminoEntre ?l1 ?l2 - localizacion)                    ; Representar que existe un camino entre dos localizaciones
-        (Construido ?e - edificio)                              ; Determinar si un edificio está construido
+        (Construido ?e - edificio ?l - localizacion)                              ; Determinar si un edificio está construido
         (AsignaNodo ?r - tipoRecurso ?l - localizacion)             ; Asignar un nodo de un recurso concreto a una localizacion concreta
         (Extrayendo ?u - unidad ?r - tipoRecurso)                   ; Indicar si un VCE está extrayendo un recurso
         (obtenerRecurso ?r - tipoRecurso)                           ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio
@@ -38,6 +38,8 @@
         (InvestigacionCreada ?i - investigacion)
         (RecursoParaInvestigacion ?tr - tipoRecurso ?ti - tipoInvestigacion)
         (InvestigacionEs ?i - investigacion ?ti - tipoInvestigacion)
+        (UnidadAsignada ?u - unidad) 
+        
         )                                                   
     
     ;ACCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,7 +89,7 @@
 						    
 						)
 						(UnidadEs ?u vce)
-						
+						(not (UnidadAsignada ?u))
 					)
 
 	    :effect (and                                           ; El resultado de esta acción será:
@@ -133,11 +135,14 @@
 					)
 				)
                     (UnidadEs ?u vce)
+                    (forall (?l2 - localizacion)
+                        (not (Construido ?e ?l2))
+                    )
                     
         )
 	    
 	    :effect (and 
-                    (Construido ?e )                 ; Finalmente el edificio es construido y debe declararse como tal
+                    (Construido ?e ?l)                 ; Finalmente el edificio es construido y debe declararse como tal
                     (En ?e ?l)                      ; Además, se asigna la localización donde se construye el edificio
         )
 	    
@@ -172,14 +177,23 @@
                     )
                 )
             )
-                    (exists ( ?te - tipoEdificio ?tu - tipoUnidad)        
+                    (exists ( ?te - tipoEdificio ?tu - tipoUnidad ?l2 - localizacion)        
                                 (and 
                                     (UnidadEs ?u ?tu)
                                     (ReclutadoEn ?tu ?te)                
                                     (EdificioEs ?e ?te)
-                                    (Construido ?e)
+                                    (Construido ?e ?l2)
                                 )
                         )
+                    
+                    (exists (?u3 - unidad ?l2 - localizacion)
+            (and
+                (UnidadEs ?u3 vce)
+                (Construido ?e ?l2)
+                (En ?u3 ?l2)
+            )
+                
+            )
             (imply
                 (UnidadEs ?u segadores)
                 (InvestigacionCreada impulsarSegador)
@@ -210,7 +224,10 @@
 					
 				)
                 (EdificioEs ?e bahiaDeIngenieria)
-                (Construido ?e)
+                (exists (?l - localizacion)
+                    (Construido ?e ?l)
+                )
+                
                 
             
         )

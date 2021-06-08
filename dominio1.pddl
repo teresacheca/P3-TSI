@@ -28,6 +28,7 @@
         (obtenerRecurso ?r - tipoRecurso)                           ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio
         (AsignaUnidadARecurso ?u - unidad ?tr - tipoRecurso)
         (UnidadEs ?u - unidad ?tu - tipoUnidad)
+        (UnidadAsignada ?u - unidad) 
     
     )                                                   
     
@@ -64,13 +65,14 @@
 						(UnidadEs ?u vce)
 						(not (Extrayendo ?u ?r))
 						(ASignaNodo ?r ?loc_recurso)
+						(not (UnidadAsignada ?u))
 						
 					)
 
 	    :effect (and                                           ; El resultado de esta acción será:
 	                (Extrayendo ?u ?r)                              ; Primero declararemos que la unidad está extrayendo el recurso
 				    (obtenerRecurso ?r)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
-				    
+				    (UnidadAsignada ?u)
 				)
 	)
 

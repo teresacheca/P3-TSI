@@ -32,6 +32,7 @@
         (EdificioEs ?e - edificio ?te - tipoEdificio)
         (RecursoParaEdificio ?tr - tipoRecurso ?te - tipoEdificio)
         (TipoDeRecurso ?tr1 - tipoRecurso ?tr2 - tipoRecurso)
+        (UnidadAsignada ?u - unidad) 
     )                                                   
     
     ;ACCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -79,13 +80,13 @@
 						        )
 						    
 						)
-						
+						(not (UnidadAsignada ?u))
 					)
 
 	    :effect (and                                           ; El resultado de esta acción será:
 	                (Extrayendo ?u ?tr)                              ; Primero declararemos que la unidad está extrayendo el recurso
 				    (obtenerRecurso ?tr)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
-				   
+				    (UnidadAsignada ?u)
 				)
 	)
 
