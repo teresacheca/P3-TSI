@@ -60,13 +60,14 @@
     
         ; Inicializamos la localización en la que se encuentra el centro de Mando y la unidad VCE1
         (En CentroDeMando1 LOC11)       
-        (En VCE1 LOC11)                 
+        (En VCE1 LOC11)  
+        (UnidadEs VCE1 vce)               
         
         ; Asignaremos también los nodos de los recursos (mineral1 y mineral2) a unas localizaciones concretas
-        (AsignaNodo mineral1 LOC23)     
-        (AsignaNodo mineral2 LOC33)
+        (AsignaNodo minerales LOC23)     
+        (AsignaNodo minerales LOC33)
     
-    
+        
     )
     
     (:goal
@@ -76,7 +77,7 @@
             ; Por tanto, sólo será necesario recoger alguno de los dos recursos
             ; Además, como solo tenemos una VCE, sólo podemos llegar a uno de los dos recursos que hay en el mapa, puesto que la unidad no podrá hacer nada más el resto de la ejecución
             ; Para ello, utilizaremos un exists, de forma que buscará un único recurso, como estamos utilizando optimización, la VCE irá al recurso que se encuentre más cercano en el mapa
-            (exists (?r - recurso) 
+            (exists (?r - tipoRecurso) 
                 (obtenerRecurso ?r))
         
         )

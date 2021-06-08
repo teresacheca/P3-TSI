@@ -1,10 +1,10 @@
-(define (problem problema_ejercicio2)
-    (:domain dominio_ejercicio2)
+(define (problem problema_ejercicio3)
+    (:domain dominio_ejercicio3)
     (:objects 
         LOC11 LOC12 LOC13 LOC14 LOC21 LOC22 LOC23 LOC24 LOC31 LOC32 LOC33 LOC34 - localizacion          ; Creamos un mapa de 3x4 (empezando pos la localización 11 y acabando por la 34)
         
-        CentroDeMando1 extractor1 - edificio             ; También nos indica que necesitamos un centro de mando y un extractor que son de tipo edificio
-        VCE1 VCE2 - unidad                               ; Es importante declarar nuestras unidades, pues serán las que recogan los recursos y construyan los edificios necesarios
+        CentroDeMando1 extractor1 barracones1 - edificio             ; También nos indica que necesitamos un centro de mando y un extractor que son de tipo edificio
+        VCE1 VCE2 VCE3 - unidad                               ; Es importante declarar nuestras unidades, pues serán las que recogan los recursos y construyan los edificios necesarios
         mineral1 mineral2 gas1 - recurso                 ; También tenemos dos recursos que sean minerales y un recurso que sea gas (el tipo se declarará en el init)
     )
     
@@ -66,9 +66,11 @@
         ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 y VCE2
         (En VCE1 LOC11)
         (En VCE2 LOC11)
+        (En VCE3 LOC11)
 
         (UnidadEs VCE1 vce)
         (UnidadEs VCE2 vce)
+        (UnidadEs VCE3 vce)
                       
         
         ; Asignaremos también los nodos de los recursos (mineral1, mineral2 y gas1) a unas localizaciones concretas para saber dónde se encuentran en el mapa
@@ -90,14 +92,20 @@
         ; Sabemos que para construir un extractor es necesario tener recursos de tipo mineral.
         ; Por lo que debemos declarar este tipo de relación para nuestro edificio de tipo extractor
         (RecursoParaEdificio minerales extractor)
+        
+        (EdificioEs barracones1 barracones)
+
+        (RecursoParaEdificio minerales barracones)
+        (RecursoParaEdificio gas barracones)
+
 
     )
     
     (:goal
         (and
             ; El objetivo del programa será recoger recurss de tipo gas Vespeno
-            (obtenerRecurso gas)
-            ;(En extractor1 LOC13)
+            ;(obtenerRecurso gas)
+            (En barracones1 LOC32)
         
         )
     
