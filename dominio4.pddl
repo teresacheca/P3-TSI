@@ -82,6 +82,7 @@
 						        )
 						    
 						)
+						(UnidadEs ?u vce)
 						
 					)
 
@@ -127,6 +128,7 @@
 						)
 					)
 				)
+                    (UnidadEs ?u vce)
                     
         )
 	    
