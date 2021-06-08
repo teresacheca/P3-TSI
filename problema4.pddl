@@ -61,7 +61,7 @@
         ; Inicializamos la localización en la que se encuentra el centro de Mando 
         (En CentroDeMando1 LOC11)      
         ; Declararemos también que el centro de mando está construido
-        (Construido CentroDeMando1 LOC11) 
+        (Construido CentroDeMando1) 
 
         ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 y VCE2
         (En VCE1 LOC11)

@@ -22,7 +22,7 @@
     (:predicates                                            ;PREDICADOS
         (En ?c - elementos ?l - localizacion)                   ; Determinar si un edificio o unidad está en una localización concreta
         (CaminoEntre ?l1 ?l2 - localizacion)                    ; Representar que existe un camino entre dos localizaciones
-        (Construido ?e - edificio ?l - localizacion)                              ; Determinar si un edificio está construido
+        (Construido ?e - edificio)                              ; Determinar si un edificio está construido
         (AsignaNodo ?r - tipoRecurso ?l - localizacion)             ; Asignar un nodo de un recurso concreto a una localizacion concreta
         (Extrayendo ?u - unidad ?r - tipoRecurso)                   ; Indicar si un VCE está extrayendo un recurso
         (obtenerRecurso ?r - tipoRecurso)                           ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio
@@ -131,7 +131,7 @@
         )
 	    
 	    :effect (and 
-                    (Construido ?e ?l)                 ; Finalmente el edificio es construido y debe declararse como tal
+                    (Construido ?e )                 ; Finalmente el edificio es construido y debe declararse como tal
                     (En ?e ?l)                      ; Además, se asigna la localización donde se construye el edificio
         )
 	    
@@ -171,7 +171,7 @@
                                     (UnidadEs ?u ?tu)
                                     (ReclutadoEn ?tu ?te)                
                                     (EdificioEs ?e ?te)
-                                    
+                                    (Construido ?e)
                                 )
                         )
 
