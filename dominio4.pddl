@@ -35,6 +35,7 @@
         (RecursoParaUnidad ?tr - tipoRecurso ?tu - tipoUnidad)
         (ReclutadoEn ?tu - tipoUnidad ?te - tipoEdificio)
         (UnidadAsignada ?u - unidad) 
+        (UnidadReclutada ?u - unidad ?l - localizacion)
     )                                                   
     
     ;ACCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -48,8 +49,7 @@
         :precondition (and 
                         (En ?u ?origen)                         ; La única precondicion necesaria es que la unidad se encuentre en la localización de origen
                         (caminoEntre ?origen ?destino)
-                        (UnidadEs ?u vce)
-                        
+                        (not (UnidadAsignada ?u))
                         )   
         :effect (and                                            ; La finalidad de la acción será que:
                     (En ?u ?destino)                                ; La unidad se encuentre en la localización de destino
@@ -134,6 +134,8 @@
                     (forall (?l2 - localizacion)
                         (not (Construido ?e ?l2))
                     )
+
+                    (not (UnidadAsignada ?u))
                     
         )
 	    
@@ -154,43 +156,53 @@
             )
             (exists (?tu - tipoUnidad )
                
-                (forall (?r - tipoRecurso )
-                    (and
-                       
-                        (UnidadEs ?u ?tu)
-                       
-                        (imply 
-                            (RecursoParaUnidad ?r ?tu) 
-                                (exists (?u2 - unidad) 
-                                (and
-                                   (Extrayendo ?u2 ?r) 
-                                    (unidadEs ?u2 vce)
-                                    (En ?u2 ?l)
+                (and
+                    (forall (?r - tipoRecurso )
+                        (and
+                        
+                            (UnidadEs ?u ?tu)
+                        
+                            (imply 
+                                (RecursoParaUnidad ?r ?tu) 
+                                    (exists (?u2 - unidad ?l2 - localizacion) 
+                                    (and
+                                        (Extrayendo ?u2 ?r) 
+                                        (unidadEs ?u2 vce)
+                                        (En ?u2 ?l2)
+                                    )
                                 )
                             )
+                            
                         )
-                        
                     )
-                )
-            )
-            (exists ( ?te - tipoEdificio ?tu - tipoUnidad ?l2 - localizacion)        
+
+                     (exists ( ?te - tipoEdificio )        
                         (and 
-                            (UnidadEs ?u ?tu)
+             ;               (UnidadEs ?u ?tu)
                             (ReclutadoEn ?tu ?te)                
                             (EdificioEs ?e ?te)
-                            (Construido ?e ?l2)
+                         ;   (En ?e ?l)
+                            (Construido ?e ?l)
                                                        
                         )
+               )
+                   
                 )
-            
-            (exists (?u3 - unidad ?l2 - localizacion)
-            (and
-                (UnidadEs ?u3 vce)
-                (Construido ?e ?l2)
-                (En ?u3 ?l2)
-            )
                 
+
             )
+
+           
+           
+            
+           ; (exists (?u3 - unidad )
+         ;   (and
+                ;(UnidadEs ?u3 vce)
+          ;      (Construido ?e ?l)
+            ;    (En ?u3 ?l2)
+         ;   )
+                
+           ; )
                     
 
 

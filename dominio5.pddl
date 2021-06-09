@@ -53,7 +53,7 @@
         :precondition (and 
                         (En ?u ?origen)                         ; La única precondicion necesaria es que la unidad se encuentre en la localización de origen
                         (caminoEntre ?origen ?destino)
-                        (UnidadEs ?u vce)
+                        (not (UnidadAsignada ?u))
                         
                         )   
         :effect (and                                            ; La finalidad de la acción será que:
@@ -94,7 +94,8 @@
 
 	    :effect (and                                           ; El resultado de esta acción será:
 	                (Extrayendo ?u ?tr)                              ; Primero declararemos que la unidad está extrayendo el recurso
-				    (obtenerRecurso ?tr)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
+				    (obtenerRecurso ?tr)  
+				    (UnidadAsignada ?u)                           ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
 				   
 				)
 	)
@@ -138,7 +139,7 @@
                     (forall (?l2 - localizacion)
                         (not (Construido ?e ?l2))
                     )
-                    
+                    (not (UnidadAsignada ?u))
         )
 	    
 	    :effect (and 
@@ -157,43 +158,41 @@
                 (not (En ?u ?l2))
             )
             (exists (?tu - tipoUnidad )
-               
-                (forall (?r - tipoRecurso )
-                    (and
-                       
-                        (UnidadEs ?u ?tu)
-                       
-                        (imply 
-                            (RecursoParaUnidad ?r ?tu) 
-                                (exists (?u2 - unidad) 
-                                (and
-                                   (Extrayendo ?u2 ?r) 
-                                    (unidadEs ?u2 vce)
-                                    (En ?u2 ?l)
+                
+                (and
+                    (forall (?r - tipoRecurso )
+                        (and
+                        
+                            (UnidadEs ?u ?tu)
+                        
+                            (imply 
+                                (RecursoParaUnidad ?r ?tu) 
+                                    (exists (?u2 - unidad ?l2 - localizacion) 
+                                    (and
+                                    (Extrayendo ?u2 ?r) 
+                                        (unidadEs ?u2 vce)
+                                        (En ?u2 ?l2)
+                                    )
                                 )
                             )
+                            
                         )
-                        
                     )
+                     (exists ( ?te - tipoEdificio  )        
+                                    (and 
+                                    ; (UnidadEs ?u ?tu)
+                                        (ReclutadoEn ?tu ?te)                
+                                        (EdificioEs ?e ?te)
+                                        (Construido ?e ?l)
+                                    )
+                            )
                 )
+               
+               
             )
-                    (exists ( ?te - tipoEdificio ?tu - tipoUnidad ?l2 - localizacion)        
-                                (and 
-                                    (UnidadEs ?u ?tu)
-                                    (ReclutadoEn ?tu ?te)                
-                                    (EdificioEs ?e ?te)
-                                    (Construido ?e ?l2)
-                                )
-                        )
+                   
                     
-                    (exists (?u3 - unidad ?l2 - localizacion)
-            (and
-                (UnidadEs ?u3 vce)
-                (Construido ?e ?l2)
-                (En ?u3 ?l2)
-            )
-                
-            )
+                    
             (imply
                 (UnidadEs ?u segadores)
                 (InvestigacionCreada impulsarSegador)

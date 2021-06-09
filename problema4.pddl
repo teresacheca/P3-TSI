@@ -16,10 +16,8 @@
         (CaminoEntre LOC11 LOC21)
         
         (CaminoEntre LOC12 LOC11)
-        (CaminoEntre LOC12 LOC13)
         (CaminoEntre LOC12 LOC22)
         
-        (CaminoEntre LOC13 LOC12)
         (CaminoEntre LOC13 LOC14)
         (CaminoEntre LOC13 LOC23)
         
@@ -27,20 +25,15 @@
         (CaminoEntre LOC14 LOC24)
         
         (CaminoEntre LOC21 LOC11)
-        (CaminoEntre LOC21 LOC22)
         (CaminoEntre LOC21 LOC31)
         
         (CaminoEntre LOC22 LOC12)
-        (CaminoEntre LOC22 LOC21)
         (CaminoEntre LOC22 LOC32)
         (CaminoEntre LOC22 LOC23)
         
         (CaminoEntre LOC23 LOC22)
         (CaminoEntre LOC23 LOC13)
-        (CaminoEntre LOC23 LOC24)
-        (CaminoEntre LOC23 LOC33)
         
-        (CaminoEntre LOC24 LOC23)
         (CaminoEntre LOC24 LOC14)
         (CaminoEntre LOC24 LOC34)
         
@@ -49,15 +42,12 @@
         
         (CaminoEntre LOC32 LOC31)
         (CaminoEntre LOC32 LOC22)
-        (CaminoEntre LOC32 LOC33)
         
-        (CaminoEntre LOC33 LOC32)
-        (CaminoEntre LOC33 LOC23)
         (CaminoEntre LOC33 LOC34)
         
         (CaminoEntre LOC34 LOC33)
         (CaminoEntre LOC34 LOC24)
-    
+
         ; Inicializamos la localización en la que se encuentra el centro de Mando 
         (En CentroDeMando1 LOC11)      
         ; Declararemos también que el centro de mando está construido
@@ -65,6 +55,7 @@
 
         ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 y VCE2
         (En VCE1 LOC11)
+      ;  (UnidadReclutada VCE1 LOC11)
         ;(En VCE2 LOC11)
        ; (En VCE3 LOC11)
 
@@ -117,6 +108,7 @@
     (:goal
         (and
             ; El objetivo del programa será recoger recurss de tipo gas Vespeno
+            (En barracones1 LOC32)
             (En marine1 LOC31)
             (En marine2 LOC24)
             (En segador1 LOC12)

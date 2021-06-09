@@ -46,7 +46,7 @@
         :precondition (and 
                         (En ?u ?origen)                         ; La única precondicion necesaria es que la unidad se encuentre en la localización de origen
                         (caminoEntre ?origen ?destino)
-                        
+                        (not (UnidadAsignada ?u))
                         )   
         :effect (and                                            ; La finalidad de la acción será que:
                     (En ?u ?destino)                                ; La unidad se encuentre en la localización de destino
@@ -112,7 +112,7 @@
                                     
                                 )
                         )
-
+                        (not (UnidadAsignada ?u))
                      ;   (obtenerRecurso ?r)                 ; Por último, para construir un edificio, necesitamos saber que hemos extraido el recurso que este necesita para ser construido
                        
         )

@@ -18,10 +18,8 @@
         (CaminoEntre LOC11 LOC21)
         
         (CaminoEntre LOC12 LOC11)
-        (CaminoEntre LOC12 LOC13)
         (CaminoEntre LOC12 LOC22)
         
-        (CaminoEntre LOC13 LOC12)
         (CaminoEntre LOC13 LOC14)
         (CaminoEntre LOC13 LOC23)
         
@@ -29,20 +27,15 @@
         (CaminoEntre LOC14 LOC24)
         
         (CaminoEntre LOC21 LOC11)
-        (CaminoEntre LOC21 LOC22)
         (CaminoEntre LOC21 LOC31)
         
         (CaminoEntre LOC22 LOC12)
-        (CaminoEntre LOC22 LOC21)
         (CaminoEntre LOC22 LOC32)
         (CaminoEntre LOC22 LOC23)
         
         (CaminoEntre LOC23 LOC22)
         (CaminoEntre LOC23 LOC13)
-        (CaminoEntre LOC23 LOC24)
-        (CaminoEntre LOC23 LOC33)
         
-        (CaminoEntre LOC24 LOC23)
         (CaminoEntre LOC24 LOC14)
         (CaminoEntre LOC24 LOC34)
         
@@ -51,10 +44,7 @@
         
         (CaminoEntre LOC32 LOC31)
         (CaminoEntre LOC32 LOC22)
-        (CaminoEntre LOC32 LOC33)
         
-        (CaminoEntre LOC33 LOC32)
-        (CaminoEntre LOC33 LOC23)
         (CaminoEntre LOC33 LOC34)
         
         (CaminoEntre LOC34 LOC33)
