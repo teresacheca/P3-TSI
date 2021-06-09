@@ -44,7 +44,7 @@
         (limiteRecurso ?tr - tipoRecurso)
         (cantidadRecurso ?tr - tipoRecurso)
         (cantidadRecursoNecesario ?c - elementos ?tr - tipoRecurso)
-
+        (cantidadUnidadesExtrayendo ?tr - tipoRecurso)
     )
     
     ;ACCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -101,6 +101,9 @@
 	                (Extrayendo ?u ?tr)                              ; Primero declararemos que la unidad está extrayendo el recurso
 				    (obtenerRecurso ?tr)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
 				    (UnidadAsignada ?u)
+
+                    (increase(cantidadUnidadesExtrayendo ?tr) 1)
+				    
 				)
 	)
 
@@ -317,7 +320,10 @@
                 (<=
                     (+
                     (cantidadRecurso ?tr)
-                        10
+                        (*
+                            10
+                            (cantidadUnidadesExtrayendo ?tr)
+                        )
                     )
                     (limiteRecurso ?tr)
                 )              ;sea límite menos 10      
@@ -327,7 +333,12 @@
 
         )
         :effect (and 
-                (increase (cantidadRecurso ?tr) 10)
+                (increase (cantidadRecurso ?tr) 
+                    (*
+                        10
+                        (cantidadUnidadesExtrayendo ?tr)
+                    )
+                )
             
             
             

@@ -125,6 +125,9 @@
         (= (cantidadRecurso minerales) 0 )
         (= (cantidadRecurso gas) 0)
 
+        (=(cantidadUnidadesExtrayendo minerales) 0)
+        (=(cantidadUnidadesExtrayendo gas)0)
+
     )
     
     (:goal
