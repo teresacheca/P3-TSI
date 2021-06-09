@@ -66,7 +66,7 @@
                       
         
         ; Asignaremos también los nodos de recursos indicados en las localizaciones indicadas
-        ; no necesitamos declarar objetos de minerales, ya que sólo necesitamos asignar un mineral a un nodo
+        ; no necesitamos declarar objetos de recursos, ya que sólo necesitamos asignar un mineral a un nodo
         (AsignaNodo minerales LOC23)     
         (AsignaNodo minerales LOC33)
         (AsignaNodo gas LOC13)

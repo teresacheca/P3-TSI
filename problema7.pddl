@@ -1,3 +1,6 @@
+; TERESA DEL CARMEN CHECA MARABOTTO
+;------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 (define (problem problema_ejercicio7)
     (:domain dominio_ejercicio7)
     (:objects 
@@ -5,8 +8,7 @@
         
         CentroDeMando1 extractor1 barracones1 - edificio             ; También nos indica que necesitamos un centro de mando y un extractor que son de tipo edificio
         VCE1 VCE2 VCE3 Marine1 Marine2 Segador1 - unidad                               ; Es importante declarar nuestras unidades, pues serán las que recogan los recursos y construyan los edificios necesarios
-      ;  mineral1 mineral2 gas1 - recurso                 ; También tenemos dos recursos que sean minerales y un recurso que sea gas (el tipo se declarará en el init)
-    )
+   )
     
     ;Partimos del ejercicio 6
     (:init
@@ -49,35 +51,36 @@
         (CaminoEntre LOC34 LOC33)
         (CaminoEntre LOC34 LOC24)
 
-        ; Inicializamos la localización en la que se encuentra el centro de Mando 
+         ; Inicializamos la localización en la que se encuentra el centro de Mando 
         (En CentroDeMando1 LOC11)      
         ; Declararemos también que el centro de mando está construido
         (Construido CentroDeMando1 LOC11) 
 
-        ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 y VCE2
-        (En VCE1 LOC11)
-      ;  (UnidadReclutada VCE1 LOC11)
-        ;(En VCE2 LOC11)
-       ; (En VCE3 LOC11)
+        ; Declararemos el tipo de edificio que es "centroDeMando1"
+        (EdificioEs centroDeMando1 centroDeMando)
 
+         ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 
+        ; no declararemos las demás, ya que el ejercicio nos indica que sólo tenemos VCE1 y si necesitamos de VCE2 y VCE3 esta deberán ser reclutadas
+        (En VCE1 LOC11)
+    
+
+        ; Si declararemos el tipo de unidades que son VCE1, VCE2 y VCE3, que son de tipo vce, ya que, necesitamos diferenciar el tipo de unidades
+        ; que son, ya que cada tipo se encargará de realizar acciones distintas
         (UnidadEs VCE1 vce)
         (UnidadEs VCE2 vce)
         (UnidadEs VCE3 vce)
                       
         
-        ; Asignaremos también los nodos de los recursos (mineral1, mineral2 y gas1) a unas localizaciones concretas para saber dónde se encuentran en el mapa
+         ; Asignaremos también los nodos de recursos indicados en las localizaciones indicadas
+        ; no necesitamos declarar objetos de recursos, ya que sólo necesitamos asignar un mineral a un nodo
         (AsignaNodo minerales LOC23)     
         (AsignaNodo minerales LOC33)
         (AsignaNodo gas LOC13)
 
-        ; Declararemos el tipo de recurso que es cada uno para poder diferenciarlos 
-        ; (necesario sobre todo para cuando vayamos a construir un edificio que necesita un recusro concreto):
-        ; mineral1 y mineral2 son recursos de tipo mineral
-    ;    (RecursoEs mineral1 minerales)          
-    ;    (RecursoEs mineral2 minerales)
-        ; gas1 es un recurso de tipo gas
-    ;    (RecursoEs gas1 gas)
 
+        ; Declararemos también el tipo de edificio que es extractor1 (que es de tipo extractor), necesario para sabe cuando necesitamos construirlo
+        (EdificioEs extractor1 extractor)
+        
         ; Declararemos también el tipo de edificio que es extractor1 (que es de tipo extractor), necesario para sabe cuando necesitamos construirlo
         (EdificioEs extractor1 extractor)
 
@@ -85,10 +88,13 @@
         ; Por lo que debemos declarar este tipo de relación para nuestro edificio de tipo extractor
         (RecursoParaEdificio minerales extractor)
         
+         ; Declararemos que tenemos un edificio llamado "barracones1" que es de tipo barracones
         (EdificioEs barracones1 barracones)
 
+        ; Además, debemos indicar que, para construir barracones, es necesario haber extraído minerales y gas Vespeno
         (RecursoParaEdificio minerales barracones)
         (RecursoParaEdificio gas barracones)
+
 
         (UnidadEs Marine1 marines)
         (UnidadEs Marine2 marines)
@@ -102,17 +108,19 @@
         (RecursoParaUnidad minerales marines)
         (RecursoParaUnidad gas segadores)
 
-        (EdificioEs centroDeMando1 centroDeMando)
 
-        (= (limiteRecurso gas) 60)
+       ; Delcararemos el máximo de gas y minerales en 60
+        (= (limiteRecurso gas) 60)              
         (= (limiteRecurso minerales) 60)
 
+        ; Declararemos las cantidades necesarios de tipos de recursos que necesitan los tipo de edificio
         (= (cantidadRecursoNecesario barracones minerales) 50)
         (= (cantidadRecursoNecesario barracones gas) 20)
 
         (= (cantidadRecursoNecesario extractor minerales) 33)
         (= (cantidadRecursoNecesario extractor gas) 0)
 
+        ; Declararemos las cantidades necesarios de tipos de recursos que necesitan los tipo de unidades
         (= (cantidadRecursoNecesario vce minerales) 10)
         (= (cantidadRecursoNecesario vce gas) 0)
 
@@ -122,40 +130,52 @@
         (= (cantidadRecursoNecesario segadores minerales) 30)
         (= (cantidadRecursoNecesario segadores gas) 30)
 
+        ; Inicializaremos la cantidad de minerales y gas a 0
         (= (cantidadRecurso minerales) 0 )
         (= (cantidadRecurso gas) 0)
 
+        ; Inicializaremos la cantidad de unidades que están extrayendo gases y minerales a 0
         (=(cantidadUnidadesExtrayendo minerales) 0)
         (=(cantidadUnidadesExtrayendo gas)0)
 
+        ; Declararemos la velocidad a la que navegan las unidades, si de localización en localizacion invertimos 10 uniddades de tiempo
+        ; tendremos lo siguiente:
         (=(velocidadUnidad vce) 10)
         (=(velocidadUnidad marines) 2)
         (=(velocidadUnidad segadores) 2)
 
+        ; Definiremos el tiempo que consumen los edificios en construirse
+
         (=(tiempoConsumidoEdificio barracones) 46)
         (=(tiempoConsumidoEdificio extractor) 21)
 
+        ; Definiremos el tiempo que consumen las unidades en construirse
         (=(tiempoConsumidoUnidad vce) 12)
         (=(tiempoConsumidoUnidad marines) 18)
         (=(tiempoConsumidoUnidad segadores) 32)
         
+        ;Inicializaremos el tiempo total a 0
         (=(TiempoTotal)0)
 
     )
     
     (:goal
         (and
-            ; El objetivo del programa será recoger recurss de tipo gas Vespeno
-            (En barracones1 LOC32)
+             ; El objetivo del programa será disponer de un marine (Marine1) en la localización LOC31,
+            ; otro marine (Marine2) en la localización LOC24, y un segador (Segador1) en la localización LOC12.
+
             (En marine1 LOC31)
             (En marine2 LOC24)
             (En segador1 LOC12)
-           ; (=(cantidadRecurso minerales) 20)
+
+             (En barracones1 LOC32)          ; Además debemos tener en cuenta que del ejercicio 3, se deduce que barracones1 debe estar construido en LOC32
+        
         
         )
     
     )
 
+    ; Implementaremos el ejercicio para intentar minimizar el tiempo total
     (:metric minimize (TiempoTotal)
     
     )

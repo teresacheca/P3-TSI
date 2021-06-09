@@ -59,7 +59,7 @@
         (UnidadEs VCE1 vce)               
         
         ; Asignaremos también dos nodos de minerales a unas localizaciones concretas indicadas
-        ; no necesitamos declarar objetos de minerales, ya que sólo necesitamos asignar un mineral a un nodo
+        ; no necesitamos declarar objetos de recursos, ya que sólo necesitamos asignar un mineral a un nodo
         (AsignaNodo minerales LOC23)     
         (AsignaNodo minerales LOC33)
     

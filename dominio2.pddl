@@ -16,7 +16,7 @@
     ;CONSTANTES ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     (:constants                                             ;CONSTANTES
         vce - tipoUnidad                                         ; Las unidades las conoceremos como VCE
-        centroDeMando barracones extractor - tipoEdificio        ; Podemos tener dos tipos de edificios: los contres de Mando y los barracones que también definiremos como constantes
+        centroDeMando barracones extractor - tipoEdificio        ; Podemos tener tres tipos de edificios: los contres de Mando, los barracones y los extractores que también definiremos como constantes
         minerales gas - tipoRecurso                              ; Dentro de los recursos distinguimos minerales y gase Vespeno
     
     )

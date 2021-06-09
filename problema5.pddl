@@ -55,29 +55,28 @@
         ; Declararemos también que el centro de mando está construido
         (Construido CentroDeMando1 LOC11) 
 
-        ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 y VCE2
-        (En VCE1 LOC11)
-        ;(En VCE2 LOC11)
-        ;(En VCE3 LOC11)
+        ; Declararemos el tipo de edificio que es "centroDeMando1"
+        (EdificioEs centroDeMando1 centroDeMando)
 
+        ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 
+        ; no declararemos las demás, ya que el ejercicio nos indica que sólo tenemos VCE1 y si necesitamos de VCE2 y VCE3 esta deberán ser reclutadas
+        (En VCE1 LOC11)
+    
+
+        ; Si declararemos el tipo de unidades que son VCE1, VCE2 y VCE3, que son de tipo vce, ya que, necesitamos diferenciar el tipo de unidades
+        ; que son, ya que cada tipo se encargará de realizar acciones distintas
         (UnidadEs VCE1 vce)
         (UnidadEs VCE2 vce)
         (UnidadEs VCE3 vce)
                       
         
-        ; Asignaremos también los nodos de los recursos (mineral1, mineral2 y gas1) a unas localizaciones concretas para saber dónde se encuentran en el mapa
+        ; Asignaremos también los nodos de recursos indicados en las localizaciones indicadas
+        ; no necesitamos declarar objetos de recursos, ya que sólo necesitamos asignar un mineral a un nodo
         (AsignaNodo minerales LOC23)     
         (AsignaNodo minerales LOC33)
         (AsignaNodo gas LOC13)
 
-        ; Declararemos el tipo de recurso que es cada uno para poder diferenciarlos 
-        ; (necesario sobre todo para cuando vayamos a construir un edificio que necesita un recusro concreto):
-        ; mineral1 y mineral2 son recursos de tipo mineral
-        (RecursoEs mineral1 minerales)          
-        (RecursoEs mineral2 minerales)
-        ; gas1 es un recurso de tipo gas
-        (RecursoEs gas1 gas)
-
+       
         ; Declararemos también el tipo de edificio que es extractor1 (que es de tipo extractor), necesario para sabe cuando necesitamos construirlo
         (EdificioEs extractor1 extractor)
 
@@ -85,43 +84,54 @@
         ; Por lo que debemos declarar este tipo de relación para nuestro edificio de tipo extractor
         (RecursoParaEdificio minerales extractor)
         
+         ; Declararemos que tenemos un edificio llamado "barracones1" que es de tipo barracones
         (EdificioEs barracones1 barracones)
 
+        ; Además, debemos indicar que, para construir barracones, es necesario haber extraído minerales y gas Vespeno
         (RecursoParaEdificio minerales barracones)
         (RecursoParaEdificio gas barracones)
 
+        
+        ; Declararemos el tipo de unidad que son las nuevas unidades del problema. Siendo Marine1 y Marine2 de tipo Marines y Segador1 de tipo Segadores
         (UnidadEs Marine1 marines)
         (UnidadEs Marine2 marines)
         (UnidadEs Segador1 segadores)
 
-        (ReclutadoEn vce centroDeMando)
-        (ReclutadoEn marines barracones)
-        (ReclutadoEn segadores barracones)
+        ; Por otro lado indicaremos el tipo edificio donde deben ser reclutados los distintos tipos de unidades
+        (ReclutadoEn vce centroDeMando)             ; Las VCEs deben ser reclutadas en los centros de mando
+        (ReclutadoEn marines barracones)            ; Los Marines deben ser reclutados en los barracones
+        (ReclutadoEn segadores barracones)          ; Los Segadores deben ser reclutados en los barracones
+        ; Si no tenemos estos tipos de edificios construido, no podemos reclutar a las unidades
 
-        (RecursoParaUnidad minerales vce)
-        (RecursoParaUnidad minerales marines)
-        (RecursoParaUnidad gas segadores)
+        ; Tambiñen sabemos que las distintas unidades necesitan de recursos para ser contruidas, por ello declararemos los siguientes predicados
+        (RecursoParaUnidad minerales vce)           ; Las VCE necesitan minerales
+        (RecursoParaUnidad minerales marines)       ; Los marines necesitan minerales
+        (RecursoParaUnidad minerales segadores)           ; Los segadores necesitan minerales y gas
+        (RecursoParaUnidad gas segadores)           
 
-        (EdificioEs centroDeMando1 centroDeMando)
-
+        ; Declararemos que para construir una bahia de ingeniería, necesitamos gas vespeno y minerales
         (RecursoParaEdificio gas bahiaDeIngenieria)
         (RecursoParaEdificio minerales bahiaDeIngenieria)
 
+        ; Para la investigacion de tipo impulsarSegador, necesitaremos gas Vespeno y minerales
         (RecursoParaInvestigacion gas impulsarSegador)
         (RecursoParaInvestigacion minerales impulsarSegador)
         
+        ; Declararemos el tipo de edificio que es bahiaDeingenieria1 (que es de tipo bahiaDeIngenieria)
         (EdificioEs bahiaDeIngenieria1 bahiaDeIngenieria)
 
     )
     
     (:goal
         (and
-            ; El objetivo del programa será recoger recurss de tipo gas Vespeno
+            ; El objetivo del programa será disponer de un marine (Marine1) en la localización LOC31,
+            ; otro marine (Marine2) en la localización LOC24, y un segador (Segador1) en la localización LOC12.
+
             (En marine1 LOC31)
             (En marine2 LOC24)
             (En segador1 LOC12)
-            (En barracones1 LOC32)
-           ; (InvestigacionCreada impulsarSegador)
+
+             (En barracones1 LOC32)          ; Además debemos tener en cuenta que del ejercicio 3, se deduce que barracones1 debe estar construido en LOC32
         
         )
     
