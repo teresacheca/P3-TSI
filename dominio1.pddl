@@ -42,7 +42,7 @@
                         (En ?u ?origen)                         ; La única precondicion necesaria es que la unidad se encuentre en la localización de origen
                         (caminoEntre ?origen ?destino)          ; Además, tenemos que declarar que existe un camino entre el origen y el destino, de esta forma, cumplirá el mapa 
                                                                 ; correspodiente implementado en el problema y además nos aseguraremos de que llame a la acción navegar por cada localización que avance 
-                        
+                        (not(UnidadAsignada ?u))                ; Debemos declarar que una unidad que ya ha sido asignada a un nodo de un recurso, no puede navegar, ya que, una vez asignemos una unidad a un recurso, esta no podrá realizar más acciones
                         )   
         :effect (and                                            ; La finalidad de la acción será que:
                     (En ?u ?destino)                                ; La unidad se encuentre en la localización de destino
@@ -71,7 +71,7 @@
 	                (Extrayendo ?u ?r)                              ; Primero declararemos que la unidad está extrayendo el recurso
                     (obtenerRecurso ?r)                             ; Luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
                     (UnidadAsignada ?u)                             ; Por último, declararemos que hemos asignada la unidad a un nodo con "unidadAsignada", de esta forma, podemos controlar las 
-                                                                    	; unidades que están asignadas a un nodo y las que no, ya que, una vez que asignemos una unidad a un nodo, esta no ppuede realizar más acciones
+                                                                    ; unidades que están asignadas a un nodo y las que no, ya que, una vez que asignemos una unidad a un nodo, esta no ppuede realizar más acciones
 				)
 	)
 
