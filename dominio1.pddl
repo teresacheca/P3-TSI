@@ -5,9 +5,9 @@
     (:types                                                 ;TIPOS
         localizacion elementos recurso - object                 ; Distinguiremos principalmente entre localizaciones, unidades y edificios a lo que llamaremos elementos, y recusos (minerales y gases)
         unidad edificio - elementos                             ; Definimos que los elementos son las unidades y los edificios
-        tipoUnidad - unidad
-        tipoEdificio - edificio
-        tipoRecurso - recurso
+        tipoUnidad - unidad                                     ; Declararemos también que existen distintos tipo de unidades, edificio y recursos (estos estarán declarados en las constantes)
+        tipoEdificio - edificio                                 ; de esta forma podemos declarar predicados generales (para todas las unidades, edificios o recursos) o  bien
+        tipoRecurso - recurso                                   ; declarar predicados para un tipo específico (de unidad, edificio o recurso)
     )
     
     ;CONSTANTES ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,11 +25,9 @@
         (Construido ?e - edificio)                              ; Determinar si un edificio está construido
         (AsignaNodo ?r - tipoRecurso ?l - localizacion)             ; Asignar un nodo de un recurso concreto a una localizacion concreta
         (Extrayendo ?u - unidad ?r - tipoRecurso)                   ; Indicar si un VCE está extrayendo un recurso
-        (obtenerRecurso ?r - tipoRecurso)                           ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio
-        (AsignaUnidadARecurso ?u - unidad ?tr - tipoRecurso)
-        (UnidadEs ?u - unidad ?tu - tipoUnidad)
-        (UnidadAsignada ?u - unidad) 
-    
+        (obtenerRecurso ?r - tipoRecurso)                           ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio           
+        (UnidadAsignada ?u - unidad)                                ; Declararemos otro predicado para saber si una unidad ha sido asignada a un recurso o no, independientemente del tipo de recurso al que está asignada, de esta forma, podremos evitar hacer forall cuando queramos saber si una unidad está extrayendo y no sepamos el tipo de recurso que extrae
+        (UnidadEs ?u - unidad ?tu - tipoUnidad)                     ; Declaramos un predicado llamado UnidadEs, de esta forma podremos saber qué tipo de unidad es una unidad en concreto
     )                                                   
     
     ;ACCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,7 +40,8 @@
         
         :precondition (and 
                         (En ?u ?origen)                         ; La única precondicion necesaria es que la unidad se encuentre en la localización de origen
-                        (caminoEntre ?origen ?destino)
+                        (caminoEntre ?origen ?destino)          ; Además, tenemos que declarar que existe un camino entre el origen y el destino, de esta forma, cumplirá el mapa 
+                                                                ; correspodiente implementado en el problema y además nos aseguraremos de que llame a la acción navegar por cada localización que avance 
                         
                         )   
         :effect (and                                            ; La finalidad de la acción será que:
@@ -62,17 +61,18 @@
 	    
 	    :precondition (and
 	                    (En ?u ?loc_recurso)                   ; Entendemos que la unidad debe estar en el lugar donde se encuentra el recurso para poder extraerlo  (Si no están en la misma localización, el programa llamará a Navegar)
-						(UnidadEs ?u vce)
-						(not (Extrayendo ?u ?r))
-						(ASignaNodo ?r ?loc_recurso)
-						(not (UnidadAsignada ?u))
+						(not (Extrayendo ?u ?r))               ; Por otro lado, debemos asegurarno que la unidad que vamos a asignar no puede estar extrayendo ese recurso
+                        (not (UnidadAsignada ?u))              ; ni puede estar ya asignada a otro recurso
+						(AsignaNodo ?r ?loc_recurso)           ; Además, debemos asegurarnos que la localización (en la que vamos a asignar y donde se encuentra la unidad), es donde está el recurso asignado
+						
 						
 					)
 
 	    :effect (and                                           ; El resultado de esta acción será:
 	                (Extrayendo ?u ?r)                              ; Primero declararemos que la unidad está extrayendo el recurso
-				    (obtenerRecurso ?r)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
-				    (UnidadAsignada ?u)
+				    (obtenerRecurso ?r)                             ; Luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
+				    (UnidadAsignada ?u)                             ; Por último, declararemos que hemos asignada la unidad a un nodo con "unidadAsignada", de esta forma, podemos controlar las 
+                                                                    ; unidades que están asignadas a un nodo y las que no, ya que, una vez que asignemos una unidad a un nodo, esta no ppuede realizar más acciones
 				)
 	)
 

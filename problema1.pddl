@@ -5,12 +5,12 @@
         
         CentroDeMando1 - edificio                   ; También nos indica que necesitamos un centro de mando que es de tipo edificio
         VCE1 - unidad                               ; Es importante declarar nuestra unidad, pues será la que recoga el recurso
-        mineral1 mineral2 - recurso                 ; También tenemos dos recursos que serán ambos minerales
+                                                  
     )
     
     (:init
     
-        ; Declaramos todos los caminos (o conexiones) existentes entre todas las localizaciones del mapa
+        ; Declaramos todos los caminos (o conexiones) existentes entre todas las localizaciones del mapa 
         
         (CaminoEntre LOC11 LOC12)
         (CaminoEntre LOC11 LOC21)
@@ -51,9 +51,12 @@
         ; Inicializamos la localización en la que se encuentra el centro de Mando y la unidad VCE1
         (En CentroDeMando1 LOC11)       
         (En VCE1 LOC11)  
+
+        ; Declararemos también, que VCE1 es de tipo vce
         (UnidadEs VCE1 vce)               
         
-        ; Asignaremos también los nodos de los recursos (mineral1 y mineral2) a unas localizaciones concretas
+        ; Asignaremos también dos nodos de minerales a unas localizaciones concretas indicadas
+        ; no necesitamos declarar objetos de minerales, ya que sólo necesitamos asignar un mineral a un nodo
         (AsignaNodo minerales LOC23)     
         (AsignaNodo minerales LOC33)
     
@@ -66,7 +69,7 @@
             ; Como se nos indica, cuando asignamos un VCE a un nodo de recursos (ya sea mineral o gas Vespeno), ya tendremos recursos ilimitamos de este tipo
             ; Por tanto, sólo será necesario recoger alguno de los dos recursos
             ; Además, como solo tenemos una VCE, sólo podemos llegar a uno de los dos recursos que hay en el mapa, puesto que la unidad no podrá hacer nada más el resto de la ejecución
-            ; Para ello, utilizaremos un exists, de forma que buscará un único recurso, como estamos utilizando optimización, la VCE irá al recurso que se encuentre más cercano en el mapa
+            ; Para ello, utilizaremos un exists, de forma que buscará un único recurso. Como estamos utilizando optimización, la VCE irá al recurso que se encuentre más cercano en el mapa
             (exists (?r - tipoRecurso) 
                 (obtenerRecurso ?r))
         
