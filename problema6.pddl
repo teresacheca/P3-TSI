@@ -3,13 +3,12 @@
     (:objects 
         LOC11 LOC12 LOC13 LOC14 LOC21 LOC22 LOC23 LOC24 LOC31 LOC32 LOC33 LOC34 - localizacion          ; Creamos un mapa de 3x4 (empezando pos la localización 11 y acabando por la 34)
         
-        CentroDeMando1 extractor1 barracones1 bahiaDeIngenieria1 - edificio             ; También nos indica que necesitamos un centro de mando y un extractor que son de tipo edificio
+        CentroDeMando1 extractor1 barracones1 - edificio             ; También nos indica que necesitamos un centro de mando y un extractor que son de tipo edificio
         VCE1 VCE2 VCE3 Marine1 Marine2 Segador1 - unidad                               ; Es importante declarar nuestras unidades, pues serán las que recogan los recursos y construyan los edificios necesarios
-        mineral1 mineral2 gas1 - recurso                 ; También tenemos dos recursos que sean minerales y un recurso que sea gas (el tipo se declarará en el init)
-
-        
+      ;  mineral1 mineral2 gas1 - recurso                 ; También tenemos dos recursos que sean minerales y un recurso que sea gas (el tipo se declarará en el init)
     )
     
+    ;Partimos del ejercicio 4
     (:init
     
         ; Declaramos todos los caminos (o conexiones) existentes entre todas las localizaciones del mapa
@@ -49,16 +48,17 @@
         
         (CaminoEntre LOC34 LOC33)
         (CaminoEntre LOC34 LOC24)
-    
+
         ; Inicializamos la localización en la que se encuentra el centro de Mando 
         (En CentroDeMando1 LOC11)      
         ; Declararemos también que el centro de mando está construido
-        (Construido CentroDeMando1) 
+        (Construido CentroDeMando1 LOC11) 
 
         ; También es necesario que inicialicemos las localizaciones en las que se encuentran las unidades VCE1 y VCE2
         (En VCE1 LOC11)
-      ;  (En VCE2 LOC11)
-      ;  (En VCE3 LOC11)
+      ;  (UnidadReclutada VCE1 LOC11)
+        ;(En VCE2 LOC11)
+       ; (En VCE3 LOC11)
 
         (UnidadEs VCE1 vce)
         (UnidadEs VCE2 vce)
@@ -73,10 +73,10 @@
         ; Declararemos el tipo de recurso que es cada uno para poder diferenciarlos 
         ; (necesario sobre todo para cuando vayamos a construir un edificio que necesita un recusro concreto):
         ; mineral1 y mineral2 son recursos de tipo mineral
-        (RecursoEs mineral1 minerales)          
-        (RecursoEs mineral2 minerales)
+    ;    (RecursoEs mineral1 minerales)          
+    ;    (RecursoEs mineral2 minerales)
         ; gas1 es un recurso de tipo gas
-        (RecursoEs gas1 gas)
+    ;    (RecursoEs gas1 gas)
 
         ; Declararemos también el tipo de edificio que es extractor1 (que es de tipo extractor), necesario para sabe cuando necesitamos construirlo
         (EdificioEs extractor1 extractor)
@@ -104,23 +104,37 @@
 
         (EdificioEs centroDeMando1 centroDeMando)
 
-        (RecursoParaEdificio gas bahiaDeIngenieria)
-        (RecursoParaEdificio minerales bahiaDeIngenieria)
+        (= (limiteRecurso gas) 60)
+        (= (limiteRecurso minerales) 60)
 
-        (RecursoParaInvestigacion gas impulsarSegador)
-        (RecursoParaInvestigacion minerales impulsarSegador)
-        
-        (EdificioEs bahiaDeIngenieria1 bahiaDeIngenieria)
+        (= (cantidadRecursoNecesario barracones minerales) 50)
+        (= (cantidadRecursoNecesario barracones gas) 20)
+
+        (= (cantidadRecursoNecesario extractor minerales) 33)
+        (= (cantidadRecursoNecesario extractor gas) 0)
+
+        (= (cantidadRecursoNecesario vce minerales) 10)
+        (= (cantidadRecursoNecesario vce gas) 0)
+
+        (= (cantidadRecursoNecesario marines minerales) 20)
+        (= (cantidadRecursoNecesario marines gas) 10)
+
+        (= (cantidadRecursoNecesario segadores minerales) 30)
+        (= (cantidadRecursoNecesario segadores gas) 30)
+
+        (= (cantidadRecurso minerales) 0 )
+        (= (cantidadRecurso gas) 0)
 
     )
     
     (:goal
         (and
             ; El objetivo del programa será recoger recurss de tipo gas Vespeno
+            (En barracones1 LOC32)
             (En marine1 LOC31)
             (En marine2 LOC24)
             (En segador1 LOC12)
-           ; (InvestigacionCreada impulsarSegador)
+           ; (=(cantidadRecurso minerales) 20)
         
         )
     

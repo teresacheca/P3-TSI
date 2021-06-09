@@ -1,29 +1,28 @@
 (define (domain dominio_ejercicio6)
-    (:requirements :adl :typing :strips)
+    (:requirements :adl :typing :strips :fluents)
     
     ;TIPOS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     (:types                                                 ;TIPOS
         localizacion elementos recurso - object                 ; Distinguiremos principalmente entre localizaciones, unidades y edificios a lo que llamaremos elementos, y recusos (minerales y gases)
-        unidad edificio investigacion - elementos                             ; Definimos que los elementos son las unidades y los edificios
+        unidad edificio - elementos                             ; Definimos que los elementos son las unidades y los edificios
         tipoUnidad - unidad
         tipoEdificio - edificio
         tipoRecurso - recurso
-        tipoInvestigacion - investigacion
     )
     
     ;CONSTANTES ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     (:constants                                             ;CONSTANTES
         vce marines segadores - tipoUnidad                                            ; Las unidades las conoceremos como VCE
-        centroDeMando barracones extractor bahiaDeIngenieria - tipoEdificio                     ; Podemos tener dos tipos de edificios: los contres de Mando y los barracones que también definiremos como constantes
+        centroDeMando barracones extractor - tipoEdificio                     ; Podemos tener dos tipos de edificios: los contres de Mando y los barracones que también definiremos como constantes
         minerales gas - tipoRecurso                                 ; Dentro de los recursos distinguimos minerales y gase Vespeno
-        impulsarSegador - tipoInvestigacion
+    
     )
     
     ;PREDICADOS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     (:predicates                                            ;PREDICADOS
         (En ?c - elementos ?l - localizacion)                   ; Determinar si un edificio o unidad está en una localización concreta
         (CaminoEntre ?l1 ?l2 - localizacion)                    ; Representar que existe un camino entre dos localizaciones
-        (Construido ?e - edificio)                              ; Determinar si un edificio está construido
+        (Construido ?e - edificio ?l - localizacion)                              ; Determinar si un edificio está construido
         (AsignaNodo ?r - tipoRecurso ?l - localizacion)             ; Asignar un nodo de un recurso concreto a una localizacion concreta
         (Extrayendo ?u - unidad ?r - tipoRecurso)                   ; Indicar si un VCE está extrayendo un recurso
         (obtenerRecurso ?r - tipoRecurso)                           ; Crearemos aparte un predicado llamado obtenerRecurso. Este lo usaremos para saber si un recurso ha sido o se está extrayendo. Este será el objetivo (goal) del ejercicio
@@ -34,11 +33,19 @@
         (RecursoParaEdificio ?tr - tipoRecurso ?te - tipoEdificio)
         (TipoDeRecurso ?tr1 - tipoRecurso ?tr2 - tipoRecurso)
         (RecursoParaUnidad ?tr - tipoRecurso ?tu - tipoUnidad)
-        (ReclutadoEn ?tu - tipoUnidad ?te - tipoEdificio) 
-        (InvestigacionCreada ?i - investigacion)
-        (RecursoParaInvestigacion ?tr - tipoRecurso ?ti - tipoInvestigacion)
-        (InvestigacionEs ?i - investigacion ?ti - tipoInvestigacion)
-        )                                                   
+        (ReclutadoEn ?tu - tipoUnidad ?te - tipoEdificio)
+        (UnidadAsignada ?u - unidad) 
+        (UnidadReclutada ?u - unidad ?l - localizacion)
+        (Recolectar ?r - recurso)
+    )                                                   
+    
+    ;FUNCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    (:functions
+        (limiteRecurso ?tr - tipoRecurso)
+        (cantidadRecurso ?tr - tipoRecurso)
+        (cantidadRecursoNecesario ?c - elementos ?tr - tipoRecurso)
+
+    )
     
     ;ACCIONES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    
@@ -51,8 +58,7 @@
         :precondition (and 
                         (En ?u ?origen)                         ; La única precondicion necesaria es que la unidad se encuentre en la localización de origen
                         (caminoEntre ?origen ?destino)
-                        (UnidadEs ?u vce)
-                        
+                        (not (UnidadAsignada ?u))
                         )   
         :effect (and                                            ; La finalidad de la acción será que:
                     (En ?u ?destino)                                ; La unidad se encuentre en la localización de destino
@@ -86,13 +92,15 @@
 						        )
 						    
 						)
+						(UnidadEs ?u vce)
+						(not (UnidadAsignada ?u))
 						
 					)
 
 	    :effect (and                                           ; El resultado de esta acción será:
 	                (Extrayendo ?u ?tr)                              ; Primero declararemos que la unidad está extrayendo el recurso
 				    (obtenerRecurso ?tr)                             ; Y luego, declararemos que ese recurso ya sido extraído (de forma quealcanzaríamos nuestro objetivo)
-				   
+				    (UnidadAsignada ?u)
 				)
 	)
 
@@ -118,26 +126,70 @@
 
                     (forall (?r - tipoRecurso)
 					
-					(exists (?te - tipoEdificio)
-						(and
-							
-							(EdificioEs ?e ?te)
-							
-							(imply (RecursoParaEdificio ?r ?te) 
-                                    (exists (?u2 - unidad) 
-                                        (Extrayendo ?u2 ?r) 
+                        (exists (?te - tipoEdificio)
+                            (and
+                                
+                                (EdificioEs ?e ?te)
+                                
+                                (imply (RecursoParaEdificio ?r ?te) 
+                                    (and
+                                     (exists (?u2 - unidad) 
+                                            (and
+                                                (Extrayendo ?u2 ?r) 
+                                                (UnidadEs ?u2 vce)
+                                            )
+                                            
+                                        )
+                                   ;  (>= (cantidadRecurso ?r) (cantidadRecursoNecesario ?te ?r))
                                     )
-							)
-						)
-					)
-				)
+                                       
+                                )
+                                (imply
+                                    (RecursoParaEdificio ?r ?te)
+                                    (>= (cantidadRecurso ?r) (cantidadRecursoNecesario ?te ?r))
+                                    
+                                )
+                            )
+                        )
+                    )
                     (UnidadEs ?u vce)
+                    (forall (?l2 - localizacion)
+                        (not (Construido ?e ?l2))
+                    )
+
+                    (not (UnidadAsignada ?u))
+                
+                    
                     
         )
 	    
 	    :effect (and 
-                    (Construido ?e )                 ; Finalmente el edificio es construido y debe declararse como tal
+                    (Construido ?e ?l)                 ; Finalmente el edificio es construido y debe declararse como tal
                     (En ?e ?l)                      ; Además, se asigna la localización donde se construye el edificio
+
+                    (when (EdificioEs ?e barracones)
+                        (and
+                            (decrease (cantidadRecurso gas) 
+                                (cantidadRecursoNecesario barracones gas)
+                            )
+                            (decrease (cantidadRecurso minerales) 
+                                (cantidadRecursoNecesario barracones minerales)
+                            )
+                        )
+                    )
+
+                    (when (EdificioEs ?e extractor)
+                        (and
+                            (decrease (cantidadRecurso gas) 
+                                (cantidadRecursoNecesario extractor gas)
+                            )
+                            (decrease (cantidadRecurso minerales) 
+                                (cantidadRecursoNecesario extractor minerales)
+                            )
+                        )
+                    )
+
+                    
         )
 	    
 	    
@@ -152,73 +204,138 @@
             )
             (exists (?tu - tipoUnidad )
                
-                (forall (?r - tipoRecurso )
-                    (and
-                       
-                        (UnidadEs ?u ?tu)
-                       
-                        (imply 
-                            (RecursoParaUnidad ?r ?tu) 
-                                (exists (?u2 - unidad) 
-                                (and
-                                   (Extrayendo ?u2 ?r) 
-                                    (unidadEs ?u2 vce)
-                                    (En ?u2 ?l)
+                (and
+                    (forall (?r - tipoRecurso )
+                        (and
+                        
+                            (UnidadEs ?u ?tu)
+                        
+                            (imply 
+                                (RecursoParaUnidad ?r ?tu) 
+                                    (exists (?u2 - unidad ?l2 - localizacion) 
+                                    (and
+                                        (Extrayendo ?u2 ?r) 
+                                        (unidadEs ?u2 vce)
+                                        (En ?u2 ?l2)
+                                    )
                                 )
                             )
+                            
+                            (exists ( ?te - tipoEdificio )        
+                                        (and 
+                            ;               (UnidadEs ?u ?tu)
+                                            (ReclutadoEn ?tu ?te)                
+                                            (EdificioEs ?e ?te)
+                                        ;   (En ?e ?l)
+                                            (Construido ?e ?l)
+                                          (imply
+                                             (RecursoParaEdificio ?r ?te)
+                                             (>= (cantidadRecurso ?r) (cantidadRecursoNecesario ?te ?r))
+                                             
+                                         )
+                                                                    
+                                        )
+                            )
                         )
-                        
                     )
+
+                     
+                   
                 )
+                
+
             )
-                    (exists ( ?te - tipoEdificio ?tu - tipoUnidad)        
-                                (and 
-                                    (UnidadEs ?u ?tu)
-                                    (ReclutadoEn ?tu ?te)                
-                                    (EdificioEs ?e ?te)
-                                    (Construido ?e)
-                                )
-                        )
-            (imply
-                (UnidadEs ?u segadores)
-                (InvestigacionCreada impulsarSegador)
-            )
+           ; (exists (?u3 - unidad )
+         ;   (and
+                ;(UnidadEs ?u3 vce)
+          ;      (Construido ?e ?l)
+            ;    (En ?u3 ?l2)
+         ;   )
+                
+           ; )
+                    
+
 
         )
         :effect (and 
                     (En ?u ?l)
+
+                    (when (UnidadEs ?u vce)
+                        (and
+                            (decrease (cantidadRecurso gas) 
+                                (cantidadRecursoNecesario vce gas)
+                            )
+                            (decrease (cantidadRecurso minerales) 
+                                (cantidadRecursoNecesario vce minerales)
+                            )
+                        )
+                    )
+
+                    (when (UnidadEs ?u marines)
+                        (and
+                            (decrease (cantidadRecurso gas) 
+                                (cantidadRecursoNecesario marines gas)
+                            )
+                            (decrease (cantidadRecurso minerales) 
+                                (cantidadRecursoNecesario marines minerales)
+                            )
+                        )
+                    )
+
+                    (when (UnidadEs ?u segadores)
+                        (and
+                            (decrease (cantidadRecurso gas) 
+                                (cantidadRecursoNecesario segadores gas)
+                            )
+                            (decrease (cantidadRecurso minerales) 
+                                (cantidadRecursoNecesario segadores minerales)
+                            )
+                        )
+                    )
+                        
+                    
                 )
         )
 
+    
+	(:action Recolectar
+        :parameters (?tr - tipoRecurso ?l - localizacion)
 
-    (:action Investigar
+        :precondition (and 
+            (exists (?u - unidad )               ;Existe una unidad que extrae el recurso. Sólo habrá una asignada a ese recurso, ya que, una vez asignada, esta no puede hacer más cosas
+                                                 ; sólo habrá una unidad asignada a este tipo de recurso y por tanto es la que se encargará de recolectarlo
+                (and
+                    (UnidadAsignada ?u)
+                    (Extrayendo ?u ?tr)
+                    (En ?u ?l)
+                )
+            )
+
         
-        :parameters (?e - edificio ?i - investigacion)
-
-        :precondition (and
-                (forall (?r - tipoRecurso)
-                    (exists (?ti - tipoInvestigacion)
-                        (imply (RecursoParaInvestigacion ?r ?ti) 
-                                    (exists (?u2 - unidad) 
-                                        (Extrayendo ?u2 ?r) 
-                                    )
-                                
-                            
-                        )
-                    )
-					
-				)
-                (EdificioEs ?e bahiaDeIngenieria)
-                (Construido ?e)
+            (and
                 
-            
-        )
+                (<=
+                    (+
+                    (cantidadRecurso ?tr)
+                        10
+                    )
+                    (limiteRecurso ?tr)
+                )              ;sea límite menos 10      
 
+            )
+
+
+        )
         :effect (and 
-            (InvestigacionCreada ?i)
+                (increase (cantidadRecurso ?tr) 10)
+            
+            
+            
         )
     )
     
+
+
 
 )
 

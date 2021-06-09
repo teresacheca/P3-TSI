@@ -109,6 +109,7 @@
                                     (RecursoParaEdificio ?r2 ?te)        ; El recurso que extrae es el que necesita el edificio para ser construido
                                     (RecursoEs ?r ?r2)                  ; Además, este recurso debe ser el mismo que el que tenemos como parámetro (por lo que comprobamos que sean iguales)
                                     (EdificioEs ?e ?te)
+                                    (UnidadEs ?u2 vce)
                                     
                                 )
                         )
